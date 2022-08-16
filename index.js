@@ -3,10 +3,12 @@ import express from "express";
 import exphbs from "express-handlebars";
 import GreetingPeople from "./greet.js";
 
+let app = express();
+
 //Instance of the factory function
 let greeting = GreetingPeople([]);
 
-let app = express();
+
 
 //Configuring handlebars
 
@@ -32,8 +34,8 @@ app.get('/', (req, res)=>{
 
 //Posting the data from html
 app.post('/greetings', (req, res)=>{
-    greeting.greetingUsers(req.body.usersName, req.body.language)
-    console.log(req.body.usersName, req.body.language)
+    greeting.greetingUsers(req.body.name, req.body.language)
+    console.log(req.body.name, req.body.language)
     res.redirect("/");
 })
 

@@ -16,24 +16,26 @@ export default function GreetingPeople(usersName){
     }
 
     function greetingUsers(usersName, language){
-        if(usersName === " "){
-            greetingMessage = "Please Enter Your Name On The Text Field.";
+        if(usersName === ""){
+            greetingMessage = "Please Enter Your Name On The Text Field And.";
         }
-        
-        if(language === "english"){
-            greetingMessage = "Hello, " + usersName;
+        else if (language !== null){
+            if(language === "english"){
+                greetingMessage = "Hello, " + usersName + ".";
+            }
+            if(language === "zulu"){
+                greetingMessage = "Sawubona, " + usersName + ".";
+            }
+            if(language === "xhosa"){
+                greetingMessage = "Molo, " + usersName + ".";
+            }     
         }
-        if(language === "zulu"){
-            greetingMessage = "Sawubona, " + usersName;
-        }
-        if(language === "xhosa"){
-            greetingMessage = "Molo, " + usersName;
-        }
-        
-        else {
+        else if (language === null) {
             greetingMessage = "Please Select A Language Of Your Choice."
         }
-    }
+        
+        
+        }
 
     function returningGreet(){
         return greetingMessage;
@@ -47,7 +49,7 @@ return{
     insertedName,
     greetingUsers,
     userNamesArray,
-    returningGreet
+    returningGreet,
 
 }
 
