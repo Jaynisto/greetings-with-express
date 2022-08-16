@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Greetings App</title>
+    <link rel="stylesheet" href="css/greet.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Greetings App</h1>
+        <p><Strong>Please Enter Your Name Bellow:</Strong></p>
+        <form action="/greetings" method="POST">
+            <div class="nameSec">
+                <input placeholder="text" class="personsName">
+                <button class="clearButton" type="submit">Clear</button>
+                <span class="count">0</span>
+            </div><br>
+            <p><strong>Please Select A Language Of Your Choice</strong></p>
+            <div class="raditos">
+                <span class="englishLabel" >English</span><input type="radio" name="foEnglish" class="englishRadio" value="english">
+                <span class="zuluLabel" >iSiZulu</span><input type="radio" name="forZulu" class="zuluRadio" value="zulu">
+                <span class="xhosaLabel" >iSiXhosa</span><input type="radio" name="forXhosa" class="xhosaRadio" value="xhosa">
+            </div><br>
+            <button class="greetButton" type="submit">greet</button>
+        </form>
+        <p><span class="greetings">{{greeted}}</span></p>
+    </div>   
+</body>
+</html>
