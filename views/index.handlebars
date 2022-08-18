@@ -9,23 +9,25 @@
 </head>
 <body>
     <div class="container">
-        <h1>Greetings App</h1>
-        <p><Strong>Please Enter Your Name Bellow:</Strong></p>
-        <form action="/greetings" method="POST">
+        <form action="/greetings" method="POST" >
+            <h1>Greetings App</h1>
+            <p><Strong>Please Enter Your Name Bellow:</Strong></p>
+            {{!-- <p><span class="warning">{{warnings}}</span></p> --}}
             <div class="nameSec">
                 <input placeholder="text" class="personsName" name="name">
                 <button class="clearButton" type="submit">Clear</button>
-                <span class="count">0</span>
+                <h2><span class="count">{{counter}}</span></h2>
             </div><br>
-            <p><strong>Please Select A Language Of Your Choice</strong></p>
-            <div class="raditos">
+            <p><strong>Please Select A Language Of Your Choice:</strong></p>
+            <div class="radios">
                 <span class="englishLabel" >English</span><input type="radio" name="language" class="englishRadio" value="english">
                 <span class="zuluLabel" >iSiZulu</span><input type="radio" name="language" class="zuluRadio" value="zulu">
                 <span class="xhosaLabel" >iSiXhosa</span><input type="radio" name="language" class="xhosaRadio" value="xhosa">
             </div><br>
             <button class="greetButton" type="submit">greet</button>
         </form>
-        <p><span class="greetings">{{{greeted}}}</span></p>
+        <p><span class="greetings">{{greeted}}</span></p><br>
+        <a href="/userInfo">Greeted Users</a>
     </div>   
 </body>
 </html>

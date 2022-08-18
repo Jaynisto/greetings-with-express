@@ -1,0 +1,14 @@
+<form action="/userInfo">
+    <h1>User Information</h1>
+    <table>
+    <tr>
+        <th>Name</th>
+        <th>Number Of Time Greeted</th>
+    </tr>
+    {{#each greetings}}
+    <tr>
+        <td>{{nameStore}}</td>
+        <td>{{amountGreeted}}</td>
+    </tr>
+    {{/each}}
+</table>

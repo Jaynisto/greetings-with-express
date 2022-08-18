@@ -28,16 +28,36 @@ app.use(bodyParser.urlencoded({extended : false}));
 app.use(bodyParser.json());
 
 // Rendering the index handlebar.
-app.get('/', (req, res)=>{   
-    res.render("index",  { greeted : greeting.returningGreet()});
+app.get('/', (req, res)=>{ 
+    console.log( greeting.nameStorage())
+    console.log(greeting.numOfStoredNames())  
+    res.render("index",  { 
+        greeted : greeting.returningGreet(),
+        counter : greeting.numOfStoredNames(),
+        // warnings : greeting.returningWarning()
+    }
+    );
 });
 
 //Posting the data from html
 app.post('/greetings', (req, res)=>{
     greeting.greetingUsers(req.body.name, req.body.language)
-    console.log(req.body.name, req.body.language)
+    // console.log(req.body.name, req.body.language)
+    greeting.numOfStoredNames()
+    greeting.storingNames(req.body.name)
+    greeting.warningMessages(req.body.name, req.body.language)
+
     res.redirect("/");
-})
+});
+
+app.get('/userInfo', (req, res)=>{
+
+    res.render("userInfo", {
+        nameStore: greeting.nameStorage(),
+        amountGreeted: greeting.numOfStoredNames()
+    });
+});
+
 
 //Starting the app on Port
 
