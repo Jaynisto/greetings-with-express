@@ -14,24 +14,26 @@ export default function GreetingPeople(){
     }
 
     function nameStorage(){
-        /* convert an object greetedName into an array*/
-        const storedNames = Object.keys(greetedNames);
-        return storedNames;
+        return greetedNames;
     }
 
     function numOfStoredNames(){
+        /* convert an object greetedName into an array*/
         const lengthOfNames = Object.values(greetedNames);
         return lengthOfNames.length;
     }
 
     
-
+     function personCounter(name){
+        const nameCount = greetedNames[name];
+        return nameCount;
+     }
 
     /*
     - storing names
     - returning stored names.
     - count all the names.
-    - return the times a user is greeted
+    - return how many times a user is greeted
     - error messages function.
     
     */
@@ -95,7 +97,8 @@ return{
     nameStorage,
     numOfStoredNames,
     warningMessages,
-    returningWarning
+    returningWarning,
+    personCounter
 }
 
 }

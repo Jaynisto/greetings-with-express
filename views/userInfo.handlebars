@@ -1,14 +1,15 @@
-<form action="/userInfo">
-    <h1>User Information</h1>
-    <table>
-    <tr>
-        <th>Name</th>
-        <th>Number Of Time Greeted</th>
-    </tr>
-    {{#each greetings}}
-    <tr>
-        <td>{{nameStore}}</td>
-        <td>{{amountGreeted}}</td>
-    </tr>
+<h1>User Information</h1>
+<p>These are all the users that have been greeted, you can <strong>Click</strong> on
+    the name to see how many times he/she has been greeted.
+</p>
+<dive class="users">
+    <h3>Name Of Greeted User.</h3>
+    {{#each nameStored}}
+    
+        <ul>
+            <li><a href="/counter/{{@key}}" style="text-decoration: none;">{{@key}}</a></li>
+        </ul>
+    
     {{/each}}
-</form>
+</div>
+

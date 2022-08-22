@@ -29,8 +29,8 @@ app.use(bodyParser.json());
 
 // Rendering the index handlebar.
 app.get('/', (req, res)=>{ 
-    console.log( greeting.nameStorage())
-    console.log(greeting.numOfStoredNames())  
+    // console.log( greeting.nameStorage())
+    // console.log(greeting.numOfStoredNames())  
     res.render("index",  { 
         greeted : greeting.returningGreet(),
         counter : greeting.numOfStoredNames(),
@@ -45,18 +45,26 @@ app.post('/greetings', (req, res)=>{
     // console.log(req.body.name, req.body.language)
     greeting.numOfStoredNames()
     greeting.storingNames(req.body.name)
-    greeting.warningMessages(req.body.name, req.body.language)
+    // greeting.warningMessages(req.body.name, req.body.language)
 
     res.redirect("/");
 });
 
 app.get('/userInfo', (req, res)=>{
-
     res.render("userInfo", {
-        nameStore: greeting.nameStorage(),
-        amountGreeted: greeting.numOfStoredNames()
+        nameStored: greeting.nameStorage(),
     });
 });
+
+app.get('/counter/:names',(req, res)=>{
+    let user = req.params.names;
+    let counter = greeting.personCounter(user);
+    console.log(counter + " Times");
+    res.render("counter",{user, counter});
+    
+});
+
+
 
 
 //Starting the app on Port
