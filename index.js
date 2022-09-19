@@ -1,14 +1,25 @@
-import bodyParser from "body-parser";
-import express from "express";
-import exphbs from "express-handlebars";
-import GreetingPeople from "./greet.js";
+const express = require("express");
+const exphbs = require("express-handlebars");
+const bodyParser = require("body-parser");
+const flash = require("express-flash");
+const session = require("express-session");
+const GreetingPeople = require("./greet");
+const db = require("./database/db.js");
+const GreetedUsersDb = require("./database/dbManipulation.js")(db);
+
 
 let app = express();
-
 //Instance of the factory function
 let greeting = GreetingPeople([]);
+// Express session
+app.use(session({
+    secret : 'codeforgeek',
+    resave: true,
+    saveUninitialized: true
+}));
 
-
+// initialize the flash middleware
+app.use(flash());
 
 //Configuring handlebars
 
@@ -28,41 +39,46 @@ app.use(bodyParser.urlencoded({extended : false}));
 app.use(bodyParser.json());
 
 // Rendering the index handlebar.
-app.get('/', (req, res)=>{ 
-    // console.log( greeting.nameStorage())
-    // console.log(greeting.numOfStoredNames())  
+app.get('/', async(req, res)=>{   
     res.render("index",  { 
         greeted : greeting.returningGreet(),
-        counter : greeting.numOfStoredNames(),
-        // warnings : greeting.returningWarning()
+        counter : await GreetedUsersDb.getUserCount(),
     }
     );
 });
 
 //Posting the data from html
-app.post('/greetings', (req, res)=>{
+app.post('/greetings', async (req, res)=>{
+    let warning = greeting.warningMessages(req.body.name, req.body.language)
+
+    if(warning){
+    req.flash('info', warning)
+    }else{
     greeting.greetingUsers(req.body.name, req.body.language)
-    // console.log(req.body.name, req.body.language)
     greeting.numOfStoredNames()
-    greeting.storingNames(req.body.name)
-    // greeting.warningMessages(req.body.name, req.body.language)
+    await GreetedUsersDb.greetings(re.body.name)
+    // greeting.storingNames(req.body.name)
+    }
 
     res.redirect("/");
 });
 
-app.get('/userInfo', (req, res)=>{
+app.get('/userInfo', async (req, res)=>{
+    let names = await GreetedUsersDb.getNames();
+    console.log(names)
     res.render("userInfo", {
-        nameStored: greeting.nameStorage(),
+        names,
     });
 });
 
-app.get('/counter/:names',(req, res)=>{
+app.get('/counter/:names',async(req, res)=>{
     let user = req.params.names;
-    let counter = greeting.personCounter(user);
-    console.log(counter + " Times");
+    let counter = await GreetedUsersDb.gettingUserCount(user);
+    // console.log(counter + " Times");
     res.render("counter",{user, counter});
     
 });
+
 
 
 
@@ -72,5 +88,5 @@ app.get('/counter/:names',(req, res)=>{
 const PORT = process.env.PORT || 2022;
 
 app.listen(PORT, (req, res)=>{
-    console.log("App Started Departing....");
+    console.log("App Started localhost:2022");
 });

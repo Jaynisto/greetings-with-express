@@ -1,8 +1,9 @@
-export default function GreetingPeople(){
+module.exports = function GreetingPeople(){
 
     var greetingMessage;
-    var warningMessage;
+    var arry = [];
     var greetedNames = {};
+
 
     function storingNames(usersName){
         if(greetedNames[usersName] === undefined){
@@ -39,9 +40,6 @@ export default function GreetingPeople(){
     */
 
     function greetingUsers(usersName, language){ 
-        // if(usersName === ""){
-        //     warningMessage = "Please Type on the TextField provided";
-        // }
         if(language !== null){
             if(language === "english"){
                 greetingMessage = "Hello, " + usersName + ".";
@@ -64,26 +62,25 @@ export default function GreetingPeople(){
         }
 
         function warningMessages(usersName,language){
-            let warningMessage = "";
-            if(usersName === "" && language == null){
-                warningMessage = "Please Select A Name And Language";
+            if(!usersName){
+                return "Please Enter Your Name.";
             }
-            else if(usersName == ""){
-                warningMessage = "Please Enter Your Name";
+            else if(!/^[a-zA-Z]+$/.test(usersName)){
+                return "Invalid Name.";
             }
-            else if(language == null){
-                warningMessage == "Please select a language"
+            else if(language != undefined){
+                arry.push(usersName);
 
+            }else{
+                return "Please Select a Language.";
             }
+            
         }
 
 
 
     function returningGreet(){
         return greetingMessage;
-    }
-    function returningWarning(){
-        return warningMessage;
     }
 
 
@@ -97,7 +94,6 @@ return{
     nameStorage,
     numOfStoredNames,
     warningMessages,
-    returningWarning,
     personCounter
 }
 

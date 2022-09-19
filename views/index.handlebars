@@ -12,7 +12,9 @@
         <form action="/greetings" method="POST" >
             <h1>Greetings App</h1>
             <p><Strong>Please Enter Your Name Bellow:</Strong></p>
-            {{!-- <p><span class="warning">{{warnings}}</span></p> --}}
+            {{#if messages.info}}
+            <p><span class="warning">{{messages.info}}</span></p>
+            {{/if}}
             <div class="nameSec">
                 <input placeholder="text" class="personsName" name="name">
                 <button class="clearButton" type="submit">Clear</button>
