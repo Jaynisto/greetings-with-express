@@ -1,55 +1,40 @@
 module.exports = function GreetedUsersDb(db){
-    const greetings = async(name)=>{
-        let output = await greetedNames(name)
-        if(output === false){
-            await db.none('INSERT INTO Greeted_Users(userName,greetedCount) VALUES ($1, $2);',[name,1])
+    async function storingNames(name){
+        const insertingTheName = await db.any('SELECT * FROM greeted_users WHERE username = $1;', [name])
+        if(insertingTheName.length === 0){
+            await db.any('INSERT INTO greeted_users (username,greetedcount) VALUES ($1,$2);',[name,1])
         }
         else{
-            const counter = await db.oneOrNode('SELECT greetedCount FROM Greeted_Users WHERE userName = $1',[name])
-            await db.none('UPDATE Greeted_Users SET greetedCount = greetedCount + 1 WHERE userName = $1', [name])
+            await db.any('UPDATE greeted_users SET username=$1, greetedcount=greetedcount + 1 WHERE username = $1;', [name])
         }
-
     }
 
-    // Checking if the user is greeted
-
-    const greetedNames = async (name)=>{
-        const output = await db.oneOrNone('SELECT userName FROM Greeted_Users WHERE userName = $1', [name])
-        return output !== null
+    async function getStoredNames(){
+        const gettingNamesFromTable = await db.any('SELECT * FROM greeted_users;')
+        return gettingNamesFromTable;
     }
 
-    // Getting all greeted names in the table
-    const getNames = async()=>{
-        const output = await db.manyOrNone('SELECT * FROM Greed_Users')
-        return output;
+    async function getCount(){
+        const gettingNamesFromTable = await db.any('SELECT * FROM greeted_users;')
+        return gettingNamesFromTable.length;
     }
 
-    // Counting how many times a user is being greeted .//////////////
-    const gettingUserCount = async(counter)=>{
-        const output = await db.one('SELECT greetedCount(*) FROM Greeted_Users')
-        return output.greetedCount
+    async function getUser(name){
+        const gettingNamesFromTable = await db.any('SELECT * FROM greeted_users WHERE username = $1;', [name])
+        return gettingNamesFromTable;
     }
 
-    // Get count for all users
-    const getUserCount = async()=>{
-        const output = await db.one('SELECT greetedCount(*) FROM Greeted_Users')
-        return output.greetedCount
+    async function deleteData(){
+        const gettingNamesFromTable = await db.any('DELETE FROM greeted_users;')
+        return gettingNamesFromTable;
     }
 
-    // CLEARING NAMES
-    const clearingNames = async()=>{
-        await db.none('DELETE FROM Greeted_Users')
-    }
-
-    return{
-        greetings,
-        greetedNames,
-        getNames,
-        gettingUserCount,
-        getUserCount,
-        clearingNames
-    }
     
-
-
+    return{
+        storingNames,
+        getStoredNames,
+        getCount,
+        getUser,
+        deleteData
+    }
 }

@@ -4,24 +4,21 @@ const bodyParser = require("body-parser");
 const flash = require("express-flash");
 const session = require("express-session");
 const GreetingPeople = require("./greet");
-const db = require("./database/db.js");
-const GreetedUsersDb = require("./database/dbManipulation.js")(db);
+const pgp = require('pg-promise')();
 
+const GreetedUsersDb = require("./database/dbManipulation.js");
 
 let app = express();
-//Instance of the factory function
+
 let greeting = GreetingPeople([]);
-// Express session
+
 app.use(session({
     secret : 'codeforgeek',
     resave: true,
     saveUninitialized: true
 }));
 
-// initialize the flash middleware
 app.use(flash());
-
-//Configuring handlebars
 
 const handlebarSetup = exphbs.engine({
     partialsDir: "./views/partials",
@@ -31,23 +28,34 @@ const handlebarSetup = exphbs.engine({
 
 app.engine('handlebars', handlebarSetup);
 app.set('view engine', 'handlebars');
-
 app.use(express.static("public"));
 
-//Configuring Body-parser to enable data to be read on the html form
 app.use(bodyParser.urlencoded({extended : false}));
 app.use(bodyParser.json());
 
-// Rendering the index handlebar.
+
+const DATABASE_URL = process.env.DATABASE_URL || "postgresql://postgres:Jnisto9801@localhost:5432/users"
+const config ={  
+    connectionString : DATABASE_URL
+}
+if(process.env.NODE_ENV == 'production'){
+    config.ssl ={
+        rejectUnauthorized: false
+    }
+}
+
+const db = pgp(config);
+
+const greetedUsersDb = GreetedUsersDb(db)
+
 app.get('/', async(req, res)=>{   
     res.render("index",  { 
         greeted : greeting.returningGreet(),
-        counter : await GreetedUsersDb.getUserCount(),
+        counter : await greetedUsersDb.getCount()
     }
     );
 });
 
-//Posting the data from html
 app.post('/greetings', async (req, res)=>{
     let warning = greeting.warningMessages(req.body.name, req.body.language)
 
@@ -55,35 +63,28 @@ app.post('/greetings', async (req, res)=>{
     req.flash('info', warning)
     }else{
     greeting.greetingUsers(req.body.name, req.body.language)
-    greeting.numOfStoredNames()
-    await GreetedUsersDb.greetings(re.body.name)
-    // greeting.storingNames(req.body.name)
+    await greetedUsersDb.getUser()
+    await greetedUsersDb.storingNames(req.body.name)
     }
 
     res.redirect("/");
 });
 
 app.get('/userInfo', async (req, res)=>{
-    let names = await GreetedUsersDb.getNames();
-    console.log(names)
+    let nameStored = await greetedUsersDb.getStoredNames()
+    console.log(nameStored)
     res.render("userInfo", {
-        names,
+        nameStored,
     });
 });
 
 app.get('/counter/:names',async(req, res)=>{
     let user = req.params.names;
-    let counter = await GreetedUsersDb.gettingUserCount(user);
-    // console.log(counter + " Times");
+    let counter = await greetedUsersDb.getUser(user)
     res.render("counter",{user, counter});
     
 });
 
-
-
-
-
-//Starting the app on Port
 
 const PORT = process.env.PORT || 2022;
 
