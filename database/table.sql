@@ -1,6 +1,5 @@
 create table Greeted_Users(
-    userID int,
+    userID SERIAL PRIMARY KEY,
     userName varchar(100),
-    greetedCount int,
-    PRIMARY KEY(userID)
+    greetedCount INT,
 );

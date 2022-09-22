@@ -44,6 +44,7 @@ if(process.env.NODE_ENV == 'production'){
     }
 }
 
+
 const db = pgp(config);
 
 const greetedUsersDb = GreetedUsersDb(db)
@@ -63,7 +64,7 @@ app.post('/greetings', async (req, res)=>{
     req.flash('info', warning)
     }else{
     greeting.greetingUsers(req.body.name, req.body.language)
-    await greetedUsersDb.getUser()
+    await greetedUsersDb.getCount()
     await greetedUsersDb.storingNames(req.body.name)
     }
 
@@ -81,6 +82,7 @@ app.get('/userInfo', async (req, res)=>{
 app.get('/counter/:names',async(req, res)=>{
     let user = req.params.names;
     let counter = await greetedUsersDb.getUser(user)
+    console.log(counter)
     res.render("counter",{user, counter});
     
 });

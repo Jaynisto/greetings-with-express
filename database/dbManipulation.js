@@ -10,7 +10,7 @@ module.exports = function GreetedUsersDb(db){
     }
 
     async function getStoredNames(){
-        const gettingNamesFromTable = await db.any('SELECT * FROM greeted_users;')
+        const gettingNamesFromTable = await db.any('SELECT username FROM greeted_users;')
         return gettingNamesFromTable;
     }
 
@@ -20,7 +20,7 @@ module.exports = function GreetedUsersDb(db){
     }
 
     async function getUser(name){
-        const gettingNamesFromTable = await db.any('SELECT * FROM greeted_users WHERE username = $1;', [name])
+        const gettingNamesFromTable = await db.any('SELECT greetedcount FROM greeted_users WHERE username = $1;', [name])
         return gettingNamesFromTable;
     }
 
