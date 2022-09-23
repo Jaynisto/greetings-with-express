@@ -20,8 +20,8 @@ module.exports = function GreetedUsersDb(db){
     }
 
     async function getUser(name){
-        const gettingNamesFromTable = await db.any('SELECT greetedcount FROM greeted_users WHERE username = $1;', [name])
-        return gettingNamesFromTable;
+        const gettingNamesFromTable = await db.one('SELECT greetedcount FROM greeted_users WHERE username = $1;', [name])
+        return gettingNamesFromTable.greetedcount;
     }
 
     async function deleteData(){

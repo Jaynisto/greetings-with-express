@@ -4,8 +4,7 @@ const bodyParser = require("body-parser");
 const flash = require("express-flash");
 const session = require("express-session");
 const GreetingPeople = require("./greet");
-const pgp = require('pg-promise')();
-
+const db = require("./database/db.js")
 const GreetedUsersDb = require("./database/dbManipulation.js");
 
 let app = express();
@@ -34,24 +33,11 @@ app.use(bodyParser.urlencoded({extended : false}));
 app.use(bodyParser.json());
 
 
-const DATABASE_URL = process.env.DATABASE_URL || "postgresql://postgres:Jnisto9801@localhost:5432/users"
-const config ={  
-    connectionString : DATABASE_URL
-}
-if(process.env.NODE_ENV == 'production'){
-    config.ssl ={
-        rejectUnauthorized: false
-    }
-}
-
-
-const db = pgp(config);
-
 const greetedUsersDb = GreetedUsersDb(db)
 
 app.get('/', async(req, res)=>{   
     res.render("index",  { 
-        greeted : greeting.returningGreet(),
+        greeted : greeting.greetingUsers(req.body.name, req.body.language),
         counter : await greetedUsersDb.getCount()
     }
     );
@@ -73,7 +59,7 @@ app.post('/greetings', async (req, res)=>{
 
 app.get('/userInfo', async (req, res)=>{
     let nameStored = await greetedUsersDb.getStoredNames()
-    console.log(nameStored)
+    // console.log(nameStored)
     res.render("userInfo", {
         nameStored,
     });
@@ -87,9 +73,14 @@ app.get('/counter/:names',async(req, res)=>{
     
 });
 
+app.post('/clearing', async function(req,res){
+    await greetedUsersDb.deleteData()
+    res.redirect('/')
+    })
+
 
 const PORT = process.env.PORT || 2022;
 
 app.listen(PORT, (req, res)=>{
-    console.log("App Started localhost:2022");
+    console.log("App Started on " + PORT);
 });

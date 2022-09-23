@@ -17,7 +17,6 @@
             {{/if}}
             <div class="nameSec">
                 <input placeholder="text" class="personsName" name="name">
-                <button class="clearButton" type="submit">Clear</button>
                 <h2><span class="count">{{counter}}</span></h2>
             </div><br>
             <p><strong>Please Select A Language Of Your Choice:</strong></p>
@@ -26,8 +25,13 @@
                 <span class="zuluLabel" >iSiZulu</span><input type="radio" name="language" class="zuluRadio" value="zulu">
                 <span class="xhosaLabel" >iSiXhosa</span><input type="radio" name="language" class="xhosaRadio" value="xhosa">
             </div><br>
-            <button class="greetButton" type="submit">greet</button>
-        </form>
+                <button class="greetButton" type="submit">greet</button>
+        </form><br>
+        <form action="/clearing" method="POST">
+                <div class="buttons">
+                    <button class="clearButton" type="submit" name="clearing">Clear</button>
+                </div>
+           </form>
         <p><span class="greetings">{{greeted}}</span></p><br>
         <a href="/userInfo" style="text-decoration: none;">Greeted Users</a>
     </div>   
