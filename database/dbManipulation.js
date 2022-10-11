@@ -29,12 +29,19 @@ module.exports = function GreetedUsersDb(db){
         return gettingNamesFromTable;
     }
 
+    async function checkingExistingUsers(username){
+        const findUser = 'SELECT count(*) from greeted_users WHERE username = $1;';
+        const result = await db.one(findUser, [username]);
+        return result.count;
+    }
+
     
     return{
         storingNames,
         getStoredNames,
         getCount,
         getUser,
-        deleteData
+        deleteData,
+        checkingExistingUsers
     }
 }

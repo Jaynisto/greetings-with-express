@@ -19,7 +19,6 @@ module.exports = function GreetingPeople(){
     }
 
     function numOfStoredNames(){
-        /* convert an object greetedName into an array*/
         const lengthOfNames = Object.values(greetedNames);
         return lengthOfNames.length;
     }
@@ -50,17 +49,12 @@ module.exports = function GreetingPeople(){
             return "Please Enter Your Name.";
         }
         if(!language){
-            // arry.push(usersName);
             return "Please Select A Language.";
         } 
         else if(!/^[a-zA-Z]+$/.test(usersName)){
             return "Invalid Name.";
         }  
     }
-
-    // function returningGreet(){
-    //     return greetingMessage;
-    // }
 
     return{
         greetingUsers,
@@ -72,13 +66,3 @@ module.exports = function GreetingPeople(){
     }
 
 }
-
-
-/*
-    - storing names
-    - returning stored names.
-    - count all the names.
-    - return how many times a user is greeted
-    - error messages function.
-    
-    */
