@@ -48,7 +48,8 @@ app.post('/greetings', async (req, res)=>{
 
     if(warning){
     req.flash('info', warning)
-    }else{
+    }
+    else{
     greeting.greetingUsers(req.body.name, req.body.language)
     await greetedUsersDb.getCount()
     await greetedUsersDb.storingNames(req.body.name)

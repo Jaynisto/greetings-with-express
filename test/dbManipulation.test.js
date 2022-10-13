@@ -20,7 +20,7 @@ describe('The basic database web app', function(){
         }
     });
 
-    it('should pass the db test', async function(){
+    it('Should be able to store user names.', async function(){
         
         // the Factory Function is called CategoryService
         let database = dbManipulation(db);
@@ -31,16 +31,38 @@ describe('The basic database web app', function(){
         assert.equal("Jack", getObject.username)
     });
 
-    it('should pass the db test', async function(){
+    it('Should return the number of how many time a user is being greeted.', async function(){
         
         // the Factory Function is called CategoryService
         let database = dbManipulation(db);
         await database.storingNames("Jack");
         await database.storingNames("Jack");
 
-        const getNameCount = await database.getUser("Jack");
-        const getObject = getNameCount[0];        
-        assert.equal(2, getObject.greetecount)
+        const getNameCount = await database.getUser("Jack");      
+        assert.equal("2", getNameCount)
+    });
+
+    it('Should return the amount of the names stored.', async function(){
+        
+        // the Factory Function is called CategoryService
+        let database = dbManipulation(db);
+        await database.storingNames("Jack");
+        await database.storingNames("Nana");
+
+        const getNames = await database.getCount();      
+        assert.equal("2", getNames)
+    });
+
+    it('Should be able to clear the names of the users.', async function(){
+        
+        // the Factory Function is called CategoryService
+        let database = dbManipulation(db);
+        await database.storingNames("Jack");
+        await database.storingNames("Nana");
+        await database.deleteData();
+
+        const clearNames = await database.getCount();       
+        assert.equal("0", clearNames)
     });
 
 

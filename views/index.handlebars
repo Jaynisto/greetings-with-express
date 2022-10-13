@@ -12,8 +12,8 @@
         <form action="/greetings" method="POST" >
             <h1>Greetings App</h1>
             <p><Strong>Please Enter Your Name Bellow:</Strong></p>
-            {{#if messages.info}}
-            <p><span class="warning">{{messages.info}}</span></p>
+            {{#if warning.info}}
+            <p><span class="warning">{{warning.info}}</span></p>
             {{/if}}
             <div class="nameSec">
                 <input placeholder="text" class="personsName" name="name">
@@ -32,7 +32,9 @@
                 <button class="clearButton" type="submit" name="clearing">Clear</button>
             </div>
         </form>
+        {{!-- {{#if info}} --}}
         <p><span class="greetings">{{greeted}}</span></p><br>
+        {{!-- {{/if}} --}}
         <a href="/userInfo" style="text-decoration: none;">Greeted Users</a>
     </div>
 
